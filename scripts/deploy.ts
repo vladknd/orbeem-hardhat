@@ -1,30 +1,36 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
-import { ethers } from "hardhat";
+import { getContractFactory } from "@nomiclabs/hardhat-ethers/types";
+
+const { ethers, upgrades } = require("hardhat");
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+  // Deploying NFTMarket
+//   const NFTMarket = await ethers.getContractFactory("NFTMarket");
+//   const instanceNFTMarket = await upgrades.deployProxy(NFTMarket);
+//   await instanceNFTMarket.deployed();
+//   console.log("NFT MARKET PROXY", instanceNFTMarket.address);
 
-  // We get the contract to deploy
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  // Deploying Rune
+//   const Rune = await ethers.getContractFactory("Rune");
+//   const instanceRune = await upgrades.deployProxy(Rune, [instanceNFTMarket.address]);
+//   await instanceRune.deployed();
+//   console.log("RUNE PROXY", instanceRune.address);
 
-  await greeter.deployed();
+  const Rune = await ethers.getContractFactory("RuneV2");
+  const runeContract = await Rune.attach("0x6101ca03aAcd7Fb88ed4E36E366268638BE3F25c")
+  
+  //CREATE NFT
+//   const createNFT = await runeContract.createRune("https://ipfs.infura.io/ipfs/QmXhGDScpoAZopfh4hoDW2qfSAajnVbchsYSUXtm2Z6dEz",5,5)
+//   const createNFTtx = await createNFT.wait()
 
-  console.log("Greeter deployed to:", greeter.address);
+  const number = await runeContract.ownerOf(3)
+  console.log("NUMBER", number);
+  
+
+  // Upgrading
+//   const RuneV2 = await ethers.getContractFactory("RuneV2");
+//   const upgradedRune = await upgrades.upgradeProxy("0x6101ca03aAcd7Fb88ed4E36E366268638BE3F25c", RuneV2);
+//   console.log("RUNE UPDATED", upgradedRune.address);
+  
+  
 }
-
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main();

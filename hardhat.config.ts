@@ -2,13 +2,16 @@ import * as dotenv from "dotenv";
 
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomiclabs/hardhat-etherscan";
+import "@nomiclabs/hardhat-ethers";
+import "@openzeppelin/hardhat-upgrades";
 import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 
 dotenv.config();
-
+const KEY = process.env.PRIVATE_KEY
+const URL = process.env.URL
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
@@ -19,25 +22,18 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
-
 const config: HardhatUserConfig = {
   solidity: "0.8.4",
+  defaultNetwork: "mumbai",
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
-  },
-  gasReporter: {
-    enabled: process.env.REPORT_GAS !== undefined,
-    currency: "USD",
+    mumbai: {
+      url: "https://speedy-nodes-nyc.moralis.io/d7e06cd98ab031958d2d3943/polygon/mumbai",
+      accounts:["c503799785ba5947b5712f47b4c01852e2d2232ba647b444eff073dfdd797de4"]
+    }
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
-  },
+    apiKey: "UV74JUZQVJT67FMGWPJ5SUQ5MXMNZP37SA",
+ }
 };
 
 export default config;
